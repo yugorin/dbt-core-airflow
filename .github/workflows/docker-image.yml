@@ -10,5 +10,13 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+    # - name: Build the Docker image
+    #   run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+      # ① シークレットを env 変数にエクスポート（ログに出さない）
+    - name: Build image
+      env:
+        API_TOKEN: ${{ secrets.API_TOKEN }}   # パスではなく値
+      run: |
+        docker compose build \
+          --secret id=secret_sample,env=SECRET_SAMPLE \
+          --progress=auto
