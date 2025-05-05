@@ -1,32 +1,23 @@
-name: Docker Image CI
+name: Docker Build
 
-on: push
+on:
+  push:
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v4
+      - name: チェックアウト
+        uses: actions/checkout@v4
 
-    - name: Enable BuildKit
-      run: echo "DOCKER_BUILDKIT=1" >> $GITHUB_ENV
+      - name: Docker Buildx のセットアップ
+        uses: docker/setup-buildx-action@v3
 
-    - name: Build with secret
-      env:
-        SECRET_SAMPLE: ${{ secrets.SECRET_SAMPLE }}
-      run: |
-        echo "${{ secrets.SECRET_SAMPLE }}" | \
-        docker build \
-          --secret id=secret_sample \
-          -t my-image . \
-          --progress=plain \
-          --file Dockerfile -
-          
-
-    - name: Check secrets passed
-      run: |
-        docker run --rm \
-          -e SECRET_SAMPLE="${{ secrets.SECRET_SAMPLE }}" \
-          my-image \
-          env | grep SECRET_SAMPLE || echo "SECRET_SAMPLE not set"
+      - name: Docker イメージのビルド
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: false
+          tags: my-image:latest
+          secrets: |
+            SECRET_SAMPLE=${{ secrets.SECRET_SAMPLE }}
