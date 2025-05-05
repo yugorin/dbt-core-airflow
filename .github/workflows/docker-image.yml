@@ -23,7 +23,7 @@ jobs:
 
     - name: Check secrets passed
       env:
-        API_TOKEN: ${{ secrets.SECRET_SAMPLE }}
+        SECRET_SAMPLE: ${{ secrets.SECRET_SAMPLE }}
       run: |
         docker compose run --rm \
           -e SECRET_SAMPLE="${SECRET_SAMPLE}" \
