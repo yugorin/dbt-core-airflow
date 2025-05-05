@@ -25,7 +25,7 @@ jobs:
       - name: Run container and print secret
         run: |
           docker run --rm \
-            --mount type=secret,id=SECRET_SAMPLE \
-            --entrypoint sh \
-            my-image:latest \
-            -c 'cat /run/secrets/SECRET_SAMPLE || echo "Secret not found"'
+          -e SECRET_SAMPLE="${{ secrets.SECRET_SAMPLE }}" \
+          my-image:latest \
+          -c 'echo "${SECRET_SAMPLE:+Secret is set}"'
+
