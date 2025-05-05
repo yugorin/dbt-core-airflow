@@ -15,7 +15,7 @@ jobs:
       run: |
         echo "$SECRET_SAMPLE" > secret_sample.txt
         docker build \
-          --mount id=secret_sample,src=secret_sample.txt \
+          --secret id=secret_sample,src=secret_sample.txt \
           -t my-image .
 
     - name: Check secrets passed
