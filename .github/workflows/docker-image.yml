@@ -29,7 +29,6 @@ jobs:
           -e SECRET_SAMPLE="${{ secrets.SECRET_SAMPLE }}" \
           --entrypoint sh \
           my-image:latest \
-          echo "$SECRET_SAMPLE" \
           -c 'echo "SECRET_SAMPLE=$SECRET_SAMPLE"'
 
 
