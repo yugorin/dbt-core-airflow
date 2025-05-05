@@ -9,14 +9,20 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+    - name: Enable BuildKit
+      run: echo "DOCKER_BUILDKIT=1" >> $GITHUB_ENV
+
     - name: Build with secret
       env:
         SECRET_SAMPLE: ${{ secrets.SECRET_SAMPLE }}
       run: |
-        echo "$SECRET_SAMPLE" > secret_sample.txt
+        echo "${{ secrets.SECRET_SAMPLE }}" | \
         docker build \
-          --secret id=secret_sample,src=secret_sample.txt \
-          -t my-image .
+          --secret id=secret_sample \
+          -t my-image . \
+        --progress=plain \
+        --file Dockerfile -
+          
 
     - name: Check secrets passed
       run: |
