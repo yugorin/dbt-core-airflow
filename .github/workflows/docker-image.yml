@@ -20,8 +20,8 @@ jobs:
         docker build \
           --secret id=secret_sample \
           -t my-image . \
-        --progress=plain \
-        --file Dockerfile -
+          --progress=plain \
+          --file Dockerfile -
           
 
     - name: Check secrets passed
