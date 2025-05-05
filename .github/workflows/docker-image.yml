@@ -13,10 +13,20 @@ jobs:
     # - name: Build the Docker image
     #   run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
       # ① シークレットを env 変数にエクスポート（ログに出さない）
-    - name: Build image
+    # - name: Build image
+    #   env:
+    #     API_TOKEN: ${{ secrets.SECRET_SAMPLE }}   # パスではなく値
+    #   run: |
+    #     docker compose build \
+    #       --secret id=secret_sample,env=SECRET_SAMPLE \
+    #       --progress=auto
+
+    - name: Check secrets passed
       env:
-        API_TOKEN: ${{ secrets.API_TOKEN }}   # パスではなく値
+        API_TOKEN: ${{ secrets.SECRET_SAMPLE }}
       run: |
-        docker compose build \
-          --secret id=secret_sample,env=SECRET_SAMPLE \
-          --progress=auto
+        docker compose run --rm \
+          -e SECRET_SAMPLE="${SECRET_SAMPLE}" \
+          your_service_name \
+          env | grep SECRET_SAMPLE || echo "SECRET_SAMPLE not set"
+
