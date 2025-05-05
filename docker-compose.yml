@@ -1,3 +1,7 @@
 services:
   dbt:
     build: .
+
+secrets:
+  secret_sample:
+    environment: SECRET_SAMPLE
