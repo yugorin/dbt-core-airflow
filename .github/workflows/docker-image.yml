@@ -3,30 +3,24 @@ name: Docker Image CI
 on: push
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v4
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
-      # ① シークレットを env 変数にエクスポート（ログに出さない）
-    - name: Build image
-      env:
-        SECRET_SAMPLE: ${{ secrets.SECRET_SAMPLE }}   # パスではなく値
-      run: |
-        docker compose build \
-          --secret id=secret_sample,env=SECRET_SAMPLE \
-          --progress=auto
 
-    - name: Check secrets passed
+    - name: Build with secret
       env:
         SECRET_SAMPLE: ${{ secrets.SECRET_SAMPLE }}
       run: |
-        docker compose run --rm \
-          -e SECRET_SAMPLE="${SECRET_SAMPLE}" \
-          your_service_name \
-          env | grep SECRET_SAMPLE || echo "SECRET_SAMPLE not set"
+        echo "$SECRET_SAMPLE" > secret_sample.txt
+        docker build \
+          --mount id=secret_sample,src=secret_sample.txt \
+          -t my-image .
 
+    - name: Check secrets passed
+      run: |
+        docker run --rm \
+          -e SECRET_SAMPLE="${{ secrets.SECRET_SAMPLE }}" \
+          my-image \
+          env | grep SECRET_SAMPLE || echo "SECRET_SAMPLE not set"
