@@ -29,5 +29,8 @@ jobs:
           -e SECRET_SAMPLE="${{ secrets.SECRET_SAMPLE }}" \
           --entrypoint sh \
           my-image:latest \
-          -c 'echo "${SECRET_SAMPLE:+Secret is set}"'
+          -c 'echo "${SECRET_SAMPLE:+Secret is set}"' \
+          echo "$SECRET_SAMPLE" \
+          [ -n "$SECRET_SAMPLE" ] && echo "***" || echo "not set"
+
 
