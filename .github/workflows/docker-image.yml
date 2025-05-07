@@ -26,9 +26,10 @@ jobs:
       - name: Run container and print secret
         run: |
           docker run --rm \
-          -e SECRET_SAMPLE="${{ secrets.SECRET_SAMPLE }}" \
-          --entrypoint sh \
           my-image:latest \
           -c 'echo "SECRET_SAMPLE=$SECRET_SAMPLE"'
+          pwd
+          ls -al
+          which python
 
 
