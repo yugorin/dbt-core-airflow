@@ -2,9 +2,3 @@ services:
   dbt:
     build:
       context: .
-    secrets:
-      - secret_sample
-
-secrets:
-  secret_sample:
-    environment: SECRET_SAMPLE
