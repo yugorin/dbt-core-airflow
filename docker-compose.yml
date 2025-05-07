@@ -2,3 +2,10 @@ services:
   dbt:
     build:
       context: .
+    # secrets:
+    #   - source: secret_sample
+    #      target: /run/secrets/secret_sample
+
+# secrets:
+#   secret_sample:
+#     file: ./secret.txt
