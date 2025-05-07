@@ -26,8 +26,8 @@ jobs:
       - name: Run container and print secret
         run: |
           docker run --rm \
-          my-image:latest \
           --entrypoint bash \
+          my-image:latest \
           -c '
             echo "SECRET_SAMPLE=$SECRET_SAMPLE"
             pwd
