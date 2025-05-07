@@ -29,7 +29,6 @@ jobs:
         run: |
           docker run --rm \
           --entrypoint bash \
-          # -e SECRET_SAMPLE \
           my-image:latest \
           -c '
             echo "SECRET_SAMPLE=$SECRET_SAMPLE"
