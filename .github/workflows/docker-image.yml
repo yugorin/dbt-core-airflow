@@ -27,6 +27,7 @@ jobs:
         run: |
           docker run --rm \
           my-image:latest \
+          --entrypoint bash \
           -c 'echo "SECRET_SAMPLE=$SECRET_SAMPLE"'
           pwd
           ls -al
