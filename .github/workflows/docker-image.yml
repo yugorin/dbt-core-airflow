@@ -33,6 +33,7 @@ jobs:
           SECRET_SAMPLE: ${{ secrets.SECRET_SAMPLE }}
         run: |
           docker run --rm \
+          -v $(pwd):. \
           --entrypoint bash \
           -e SECRET_SAMPLE \
           my-image:latest \
