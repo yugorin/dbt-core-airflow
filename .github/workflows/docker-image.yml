@@ -41,6 +41,7 @@ jobs:
             echo "SECRET_SAMPLE=$SECRET_SAMPLE"
             pwd
             ls -al
+            ls -al /app
             which python
           '
 
