@@ -1,6 +1,9 @@
 services:
   dbt:
-    build: .
+    build:
+      context: .
+    secrets:
+      - secret_sample
 
 secrets:
   secret_sample:
