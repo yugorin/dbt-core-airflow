@@ -1,8 +1,9 @@
-# syntax=docker/dockerfile:1.4
 FROM python:3.12.10-slim-bullseye
 
-RUN --mount=type=secret,id=SECRET_SAMPLE \
-    sh -c 'SECRET=$(cat /run/secrets/SECRET_SAMPLE) && echo "シークレットを使用中"'
+RUN apt-get update && apt-get -y install git
+RUN pip install dbt-snowflake
+
+COPY . .
 
 # Keep the container running
-CMD ["tail", "-f", "/dev/null"]
+ENTRYPOINT ["tail", "-f", "/dev/null"]
