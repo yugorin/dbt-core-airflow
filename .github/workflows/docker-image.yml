@@ -57,7 +57,10 @@ jobs:
       #       which dbt
       #       dbt debug
       #     '
-
+      
+      - name: サービスをバックグラウンドで起動
+        run: docker compose up -d
+        
       - name: Run container with compose
         env:
           DBT_PROFILES_YML: ${{ secrets.DBT_PROFILES_YML }}
