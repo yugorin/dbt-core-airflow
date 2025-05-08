@@ -25,6 +25,8 @@ jobs:
           push: false
           load: true
           tags: my-image:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           secrets: |
             DBT_PROFILES_YML=${{ secrets.DBT_PROFILES_YML }}
             SNOWFLAKE_PRIVATE_KEY=${{ secrets.SNOWFLAKE_PRIVATE_KEY }}
