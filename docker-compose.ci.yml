@@ -1,3 +1,12 @@
+services:
+  dbt:
+    build:
+      context: .
+    secrets:
+      - source: dbt_profiles_yml
+        target: /run/secrets/dbt_profiles.yml
+      - snowflake_private_key
+
 secrets:
   dbt_profiles_yml:
     environment: DBT_PROFILES_YML
