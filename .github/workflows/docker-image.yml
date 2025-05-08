@@ -26,24 +26,32 @@ jobs:
           load: true
           tags: my-image:latest
           secrets: |
-            SECRET_SAMPLE=${{ secrets.SECRET_SAMPLE }}
+            DBT_PROFILES_YML=${{ secrets.DBT_PROFILES_YML }}
+            SNOWFLAKE_PRIVATE_KEY=${{ secrets.SNOWFLAKE_PRIVATE_KEY }}
 
       - name: Run container and print secret
         env:
-          SECRET_SAMPLE: ${{ secrets.SECRET_SAMPLE }}
+          DBT_PROFILES_YML: ${{ secrets.DBT_PROFILES_YML }}
+          SNOWFLAKE_PRIVATE_KEY: ${{ secrets.SNOWFLAKE_PRIVATE_KEY }}
         run: |
           docker run --rm \
           -v $(pwd):/app \
           -w /app \
           --entrypoint bash \
           -e SECRET_SAMPLE \
+          -e DBT_PROFILES_DIR="/app/.dbt"
           my-image:latest \
           -c '
-            echo "SECRET_SAMPLE=$SECRET_SAMPLE"
+            echo "DBT_PROFILES_DIR"
+            echo "DBT_PROFILES_YML=$DBT_PROFILES_YML"
+            echo "SNOWFLAKE_PRIVATE_KEY=$SNOWFLAKE_PRIVATE_KEY"
             pwd
             ls -al
             ls -al /app
             which python
+            pip list
+            which dbt
+            dbt debug
           '
 
 
