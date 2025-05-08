@@ -3,8 +3,7 @@ services:
     build:
       context: .
     secrets:
-      - source: dbt_profiles_yml
-        target: /app/.dbt/dbt_profiles.yml
+      - dbt_profiles_yml
       - snowflake_private_key
 
 secrets:
