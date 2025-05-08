@@ -25,9 +25,7 @@ jobs:
       
       - name: サービスをバックグラウンドで起動（再ビルド抑止）
         run: |
-          docker compose \
-          -f docker-compose.ci.yml \
-          up -d --no-build
+          docker compose -f docker-compose.ci.yml up -d --no-build
         env:
           DBT_PROFILES_YML: ${{ secrets.DBT_PROFILES_YML }}
           SNOWFLAKE_PRIVATE_KEY: ${{ secrets.SNOWFLAKE_PRIVATE_KEY }}
@@ -37,12 +35,11 @@ jobs:
           DBT_PROFILES_YML: ${{ secrets.DBT_PROFILES_YML }}
           SNOWFLAKE_PRIVATE_KEY: ${{ secrets.SNOWFLAKE_PRIVATE_KEY }}
         run: |
-          docker compose \
-          -f docker-compose.ci.yml \
+          docker compose -f docker-compose.ci.yml exec \
           -e DBT_PROFILES_DIR="/app/.dbt" \
           -e DBT_PROFILES_YML \
           -e SNOWFLAKE_PRIVATE_KEY \
-          exec　dbt bash -c '
+          dbt bash -c '
             mkdir -p /app/.dbt
             echo "$DBT_PROFILES_YML" > /app/.dbt/profiles.yml
             dbt debug
