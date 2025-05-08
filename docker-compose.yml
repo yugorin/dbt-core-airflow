@@ -9,6 +9,6 @@ services:
 
 secrets:
   dbt_profiles_yml:
-    environment: ${DBT_PROFILES_YML}
+    environment: DBT_PROFILES_YML
   snowflake_private_key:
-    environment: ${SNOWFLAKE_PRIVATE_KEY}
+    environment: SNOWFLAKE_PRIVATE_KEY
