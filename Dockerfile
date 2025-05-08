@@ -7,8 +7,10 @@ RUN pip install dbt-snowflake
 
 COPY . /usr/app
 
-RUN adduser dbt_user && \
-  chown -R dbt_user /usr/app
+RUN groupadd -r dbt_users && \
+    adduser  dbt_user && \
+    usermod -g dbt_users dbt_user && \
+    chown -R dbt_user:dbt_users /usr/app
 USER dbt_user
 
 # Keep the container running
