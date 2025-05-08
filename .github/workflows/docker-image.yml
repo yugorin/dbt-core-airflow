@@ -46,6 +46,8 @@ jobs:
             echo "DBT_PROFILES_DIR"
             echo "DBT_PROFILES_YML=$DBT_PROFILES_YML"
             echo "SNOWFLAKE_PRIVATE_KEY=$SNOWFLAKE_PRIVATE_KEY"
+            echo "${{ secrets.DBT_PROFILES_YML }}" > /app/.dbt/profiles.yml
+            echo /app/.dbt/profiles.yml
             pwd
             ls -al
             ls -al /app
