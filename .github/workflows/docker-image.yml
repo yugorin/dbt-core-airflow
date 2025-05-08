@@ -29,25 +29,43 @@ jobs:
             DBT_PROFILES_YML=${{ secrets.DBT_PROFILES_YML }}
             SNOWFLAKE_PRIVATE_KEY=${{ secrets.SNOWFLAKE_PRIVATE_KEY }}
 
-      - name: Run container and print secret
+      # - name: Run container and print secret
+      #   env:
+      #     DBT_PROFILES_YML: ${{ secrets.DBT_PROFILES_YML }}
+      #     SNOWFLAKE_PRIVATE_KEY: ${{ secrets.SNOWFLAKE_PRIVATE_KEY }}
+      #   run: |
+      #     docker run --rm \
+      #     -v $(pwd):/app \
+      #     -w /app \
+      #     --entrypoint bash \
+      #     -e DBT_PROFILES_DIR="/app/.dbt" \
+      #     -e DBT_PROFILES_YML \
+      #     -e SNOWFLAKE_PRIVATE_KEY \
+      #     my-image:latest \
+      #     -c '
+      #       echo "DBT_PROFILES_YML=$DBT_PROFILES_YML"
+      #       echo "SNOWFLAKE_PRIVATE_KEY=$SNOWFLAKE_PRIVATE_KEY"
+      #       mkdir -p /app/.dbt
+      #       echo "$DBT_PROFILES_YML" > /app/.dbt/profiles.yml
+      #       echo "DBT_PROFILES_DIR"
+      #       cat /app/.dbt/profiles.yml
+      #       pwd
+      #       ls -al
+      #       ls -al /run/secrets
+      #       which python
+      #       pip list
+      #       which dbt
+      #       dbt debug
+      #     '
+
+      - name: Run container with compose
         env:
           DBT_PROFILES_YML: ${{ secrets.DBT_PROFILES_YML }}
           SNOWFLAKE_PRIVATE_KEY: ${{ secrets.SNOWFLAKE_PRIVATE_KEY }}
         run: |
-          docker run --rm \
-          -v $(pwd):/app \
-          -w /app \
-          --entrypoint bash \
-          -e DBT_PROFILES_DIR="/app/.dbt" \
-          -e DBT_PROFILES_YML \
-          -e SNOWFLAKE_PRIVATE_KEY \
-          my-image:latest \
-          -c '
+          docker compose exec -e DBT_PROFILES_DIR="/app/.dbt" app bash -c '
             echo "DBT_PROFILES_YML=$DBT_PROFILES_YML"
             echo "SNOWFLAKE_PRIVATE_KEY=$SNOWFLAKE_PRIVATE_KEY"
-            mkdir -p /app/.dbt
-            echo "$DBT_PROFILES_YML" > /app/.dbt/profiles.yml
-            echo "DBT_PROFILES_DIR"
             cat /app/.dbt/profiles.yml
             pwd
             ls -al
