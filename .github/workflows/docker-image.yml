@@ -38,8 +38,9 @@ jobs:
           -v $(pwd):/app \
           -w /app \
           --entrypoint bash \
-          -e SECRET_SAMPLE \
-          -e DBT_PROFILES_DIR="/app/.dbt"
+          -e DBT_PROFILES_DIR="/app/.dbt" \
+          -e DBT_PROFILES_YML \
+          -e SNOWFLAKE_PRIVATE_KEY \
           my-image:latest \
           -c '
             echo "DBT_PROFILES_DIR"
