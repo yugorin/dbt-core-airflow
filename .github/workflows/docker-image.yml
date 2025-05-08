@@ -37,12 +37,12 @@ jobs:
           DBT_PROFILES_YML: ${{ secrets.DBT_PROFILES_YML }}
           SNOWFLAKE_PRIVATE_KEY: ${{ secrets.SNOWFLAKE_PRIVATE_KEY }}
         run: |
-          docker compose exec \
+          docker compose \
           -f docker-compose.ci.yml \
           -e DBT_PROFILES_DIR="/app/.dbt" \
           -e DBT_PROFILES_YML \
           -e SNOWFLAKE_PRIVATE_KEY \
-          dbt bash -c '
+          exec　dbt bash -c '
             mkdir -p /app/.dbt
             echo "$DBT_PROFILES_YML" > /app/.dbt/profiles.yml
             dbt debug
