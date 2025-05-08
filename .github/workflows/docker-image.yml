@@ -37,7 +37,6 @@ jobs:
         run: |
           docker compose -f docker-compose.ci.yml exec \
           -e DBT_PROFILES_DIR="/usr/app/.dbt" \
-          # -e DBT_PROFILES_DIR="/run/secrets" \
           -e DBT_PROFILES_YML \
           -e SNOWFLAKE_PRIVATE_KEY \
           dbt bash -c '
