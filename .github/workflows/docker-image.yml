@@ -51,7 +51,7 @@ jobs:
             cat /app/.dbt/profiles.yml
             pwd
             ls -al
-            ls -al /app
+            ls -al /run/secrets
             which python
             pip list
             which dbt
