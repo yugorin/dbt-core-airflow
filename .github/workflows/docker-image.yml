@@ -40,9 +40,7 @@ jobs:
           -e DBT_PROFILES_YML \
           -e SNOWFLAKE_PRIVATE_KEY \
           dbt bash -c '
-            pwd
-            ls -al
-            ls -al /usr/app
+            mkdir -p /usr/app/.dbt
             ln -s /run/secrets/dbt_profiles_yml /usr/app/.dbt/profiles.yml
             dbt debug
           '
