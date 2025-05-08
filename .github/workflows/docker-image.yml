@@ -42,7 +42,6 @@ jobs:
           dbt bash -c '
             ln -s /run/secrets/dbt_profiles_yml /run/secrets/profiles.yml
             dbt debug
-            cat /run/secrets/profiles.yml
           '
 
 
