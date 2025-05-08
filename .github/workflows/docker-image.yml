@@ -60,6 +60,9 @@ jobs:
       
       - name: サービスをバックグラウンドで起動
         run: docker compose up -d
+        env:
+          DBT_PROFILES_YML: ${{ secrets.DBT_PROFILES_YML }}
+          SNOWFLAKE_PRIVATE_KEY: ${{ secrets.SNOWFLAKE_PRIVATE_KEY }}
         
       - name: Run container with compose
         env:
