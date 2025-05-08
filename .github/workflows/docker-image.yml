@@ -24,7 +24,10 @@ jobs:
           cache-to: type=gha,mode=max
       
       - name: サービスをバックグラウンドで起動（再ビルド抑止）
-        run: docker compose up -d --no-build
+        run: |
+          docker compose \
+          -f docker-compose.yml -f docker-compose.ci.yml \
+          up -d --no-build
         env:
           DBT_PROFILES_YML: ${{ secrets.DBT_PROFILES_YML }}
           SNOWFLAKE_PRIVATE_KEY: ${{ secrets.SNOWFLAKE_PRIVATE_KEY }}
@@ -35,6 +38,7 @@ jobs:
           SNOWFLAKE_PRIVATE_KEY: ${{ secrets.SNOWFLAKE_PRIVATE_KEY }}
         run: |
           docker compose exec \
+          -f docker-compose.yml -f docker-compose.ci.yml \
           -e DBT_PROFILES_DIR="/app/.dbt" \
           -e DBT_PROFILES_YML \
           -e SNOWFLAKE_PRIVATE_KEY \
