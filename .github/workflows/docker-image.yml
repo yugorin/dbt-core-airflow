@@ -41,17 +41,6 @@ jobs:
           dbt bash -c '
             mkdir -p /app/.dbt
             echo "$DBT_PROFILES_YML" > /app/.dbt/profiles.yml
-            echo "DBT_PROFILES_DIR=$DBT_PROFILES_DIR"
-            cat /app/.dbt/profiles.yml
-            echo "DBT_PROFILES_YML=$DBT_PROFILES_YML"
-            echo "SNOWFLAKE_PRIVATE_KEY=$SNOWFLAKE_PRIVATE_KEY"
-            cat /app/.dbt/profiles.yml
-            pwd
-            ls -al
-            ls -al /run/secrets
-            which python
-            pip list
-            which dbt
             dbt debug
           '
 
