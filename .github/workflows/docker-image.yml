@@ -24,7 +24,7 @@ jobs:
           context: .
           push: false
           load: true
-          tags: my-image:latest
+          tags: dbt-core-airflow-dbt:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
           secrets: |
