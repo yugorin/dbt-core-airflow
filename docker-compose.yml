@@ -2,10 +2,13 @@ services:
   dbt:
     build:
       context: .
-    # secrets:
-    #   - source: secret_sample
-    #      target: /run/secrets/secret_sample
+    secrets:
+      - source: dbt_profiles_yml
+        target: /run/secrets/dbt_profiles.yml
+      - snowflake_private_key
 
-# secrets:
-#   secret_sample:
-#     file: ./secret.txt
+secrets:
+  dbt_profiles_yml:
+    environment: DBT_PROFILES_YML
+  snowflake_private_key:
+    environment: snowflake_private_key
