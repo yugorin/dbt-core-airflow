@@ -27,9 +27,6 @@ jobs:
           tags: dbt-core-airflow-dbt:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          # secrets: |
-          #   DBT_PROFILES_YML=${{ secrets.DBT_PROFILES_YML }}
-          #   SNOWFLAKE_PRIVATE_KEY=${{ secrets.SNOWFLAKE_PRIVATE_KEY }}
       
       - name: サービスをバックグラウンドで起動（再ビルド抑止）
         run: docker compose up -d --no-build
@@ -38,9 +35,9 @@ jobs:
           SNOWFLAKE_PRIVATE_KEY: ${{ secrets.SNOWFLAKE_PRIVATE_KEY }}
         
       - name: Run container with compose
-        env:
-          DBT_PROFILES_YML: ${{ secrets.DBT_PROFILES_YML }}
-          SNOWFLAKE_PRIVATE_KEY: ${{ secrets.SNOWFLAKE_PRIVATE_KEY }}
+        # env:
+        #   DBT_PROFILES_YML: ${{ secrets.DBT_PROFILES_YML }}
+        #   SNOWFLAKE_PRIVATE_KEY: ${{ secrets.SNOWFLAKE_PRIVATE_KEY }}
         run: |
           docker compose exec \
           -e DBT_PROFILES_DIR="/app/.dbt" \
