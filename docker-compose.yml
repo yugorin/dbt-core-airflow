@@ -2,6 +2,8 @@ services:
   dbt:
     build:
       context: .
+    volumes:
+      - ./requirements.txt:/usr/app/requirements.txt
     secrets:
       - source: dbt_profiles_yml
         target: /run/secrets/dbt_profiles.yml
