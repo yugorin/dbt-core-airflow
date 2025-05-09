@@ -1,7 +1,13 @@
 name: Docker Build
 
 on:
-  push:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - '**.sql'
+      # - '**.yml'
+    branches:
+      - 'main'
 
 jobs:
   build:
@@ -9,6 +15,28 @@ jobs:
     steps:
       - name: チェックアウト
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+
+      - id: diff
+        run: |
+          echo 'diff_name_only<<EOF'
+          git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}
+          echo EOF
+          >> "$GITHUB_OUTPUT"
+
+      - name: echo vars for loop
+        env:
+          DIFF_NAME_ONLY: ${{ steps.diff.outputs.diff_name_only }}
+        run: |
+          for diff_file in $DIFF_NAME_ONLY; do
+            echo ${diff_file}
+          done
+
+      - name: echo vars for loop
+        env:
+          DIFF_NAME_ONLY: ${{ steps.diff.outputs.diff_name_only }}
 
       - name: Docker Buildx のセットアップ
         uses: docker/setup-buildx-action@v3
