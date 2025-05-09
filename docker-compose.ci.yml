@@ -4,7 +4,10 @@ services:
       context: .
     volumes:
       - ./requirements.txt:/usr/app/requirements.txt
+      - ./dbt_project.yml:/usr/app/dbt_project.yml
       - ./models:/usr/app/models
+      - ./.sqlfluff:/usr/app/.sqlfluff
+      - ./.sqlfluffignore:/usr/app/.sqlfluffignore
     secrets:
       - dbt_profiles_yml
       - snowflake_private_key
