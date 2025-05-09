@@ -26,7 +26,7 @@ jobs:
           echo EOF
           >> "$GITHUB_OUTPUT"
 
-      - name: echo vars for loop　# to delete
+      - name: echo vars for loop　# to delete exec in docker
         env:
           DIFF_NAME_ONLY: ${{ steps.diff.outputs.diff_name_only }}
         run: |
