@@ -65,9 +65,11 @@ jobs:
           -e DBT_PROFILES_YML \
           -e SNOWFLAKE_PRIVATE_KEY \
           dbt bash -c '
+            set -x
             mkdir -p /usr/app/.dbt
             ln -s /run/secrets/dbt_profiles_yml /usr/app/.dbt/profiles.yml
-            sqlfluff lint models/
+            echo "Running SQLFluff lint..."
+            sqlfluff lint models/ --verbose
           '
 
 
