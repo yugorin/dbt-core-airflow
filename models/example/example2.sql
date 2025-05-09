@@ -1,4 +1,4 @@
 # cicd test!!
-select 2 as dummy_column
+select 2 AS dummy_column
 union all
-select null as dummy_column
+select null as dummy_column 
