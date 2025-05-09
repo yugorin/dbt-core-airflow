@@ -28,14 +28,6 @@ jobs:
             echo EOF
           } >> "$GITHUB_OUTPUT"
 
-      # - name: echo vars for loop　# to delete
-      #   env:
-      #     SQL_FILE_PATHS_TO_LINT: ${{ steps.diff.outputs.sql_file_paths_to_lint }}
-      #   run: |
-      #     for file_name in $SQL_FILE_PATHS_TO_LINT; do
-      #       echo ${file_name}
-      #     done
-
       - name: Docker Buildx のセットアップ
         uses: docker/setup-buildx-action@v3
 
