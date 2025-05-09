@@ -2,12 +2,17 @@ services:
   dbt:
     build:
       context: .
+    environment:
+      - DBT_PROFILES_DIR=/usr/app/.dbt
     volumes:
       - ./requirements.txt:/usr/app/requirements.txt
+      - ./dbt_project.yml:/usr/app/dbt_project.yml
       - ./models:/usr/app/models
+      - ./.sqlfluff:/usr/app/.sqlfluff
+      - ./.sqlfluffignore:/usr/app/.sqlfluffignore
     secrets:
       - source: dbt_profiles_yml
-        target: /run/secrets/dbt_profiles.yml
+        target: /usr/app/.dbt/profiles.yml
       - snowflake_private_key
 
 secrets:

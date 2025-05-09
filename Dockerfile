@@ -1,11 +1,19 @@
-FROM python:3.12.10-slim-bullseye
-
+FROM python:3.12.10-slim-bullseye AS builder
 WORKDIR /usr/app
-COPY . /usr/app
+COPY requirements.txt /usr/app/requirements.txt
 
 RUN apt-get update && apt-get -y install git && \
     pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
+    pip install --no-cache-dir -r requirements.txt && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+FROM python:3.12.10-slim-bullseye
+WORKDIR /usr/app
+
+COPY --from=builder /usr/bin/git /usr/bin/git
+COPY --from=builder /usr/local/bin/dbt /usr/local/bin/dbt
+COPY --from=builder /usr/local/lib/python3.12/site-packages /usr/local/lib/python3.12/site-packages
 
 RUN groupadd -r dbt_users && \
     adduser  dbt_user && \
