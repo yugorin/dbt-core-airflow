@@ -4,6 +4,7 @@ services:
       context: .
     volumes:
       - ./requirements.txt:/usr/app/requirements.txt
+      - ./models:/usr/app/models
     secrets:
       - source: dbt_profiles_yml
         target: /run/secrets/dbt_profiles.yml
