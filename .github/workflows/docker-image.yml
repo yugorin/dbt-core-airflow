@@ -5,7 +5,7 @@ on:
     types: [opened, synchronize, reopened, ready_for_review]
     paths:
       - '**.sql'
-      - '**.yml'
+      # - '**.yml'
     branches:
       - 'main'
 
@@ -20,19 +20,13 @@ jobs:
           fetch-depth: 0
 
       - id: diff
+        name: PRの差分のファイル名一覧を取得
         run: |
-          echo 'diff_name_only<<EOF'
-          git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}
-          echo EOF
-          >> "$GITHUB_OUTPUT"
-
-      - name: echo vars for loop　# to delete exec in docker
-        env:
-          DIFF_NAME_ONLY: ${{ steps.diff.outputs.diff_name_only }}
-        run: |
-          for diff_file in $DIFF_NAME_ONLY; do
-            echo ${diff_file}
-          done
+          {
+            echo 'sql_file_paths_to_lint<<EOF'
+            git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} | grep '\.sql$'
+            echo EOF
+          } >> "$GITHUB_OUTPUT"
 
       - name: Docker Buildx のセットアップ
         uses: docker/setup-buildx-action@v3
@@ -55,21 +49,23 @@ jobs:
           SNOWFLAKE_PRIVATE_KEY: ${{ secrets.SNOWFLAKE_PRIVATE_KEY }}
         
       - name: Run container with compose for sqlfluff lint models
-        continue-on-error: true
         env:
           DBT_PROFILES_YML: ${{ secrets.DBT_PROFILES_YML }}
           SNOWFLAKE_PRIVATE_KEY: ${{ secrets.SNOWFLAKE_PRIVATE_KEY }}
+          SQL_FILE_PATHS_TO_LINT: ${{ steps.diff.outputs.sql_file_paths_to_lint }}
         run: |
           docker compose -f docker-compose.ci.yml exec \
           -e DBT_PROFILES_DIR="/usr/app/.dbt" \
           -e DBT_PROFILES_YML \
           -e SNOWFLAKE_PRIVATE_KEY \
+          -e SQL_FILE_PATHS_TO_LINT \
           dbt bash -c '
             mkdir -p /usr/app/.dbt
             ln -s /run/secrets/dbt_profiles_yml /usr/app/.dbt/profiles.yml
-            sqlfluff lint models/
+
+            set -eux
+            for file in $SQL_FILE_PATHS_TO_LINT; do
+              echo "Linting $file"
+              sqlfluff lint "$file" --verbose
+            done
           '
-          echo "### 🧹 SQLFluff Lint Result" >> $GITHUB_STEP_SUMMARY
-          docker compose -f docker-compose.ci.yml exec dbt cat /tmp/lint_result.txt >> $GITHUB_STEP_SUMMARY
-
-
