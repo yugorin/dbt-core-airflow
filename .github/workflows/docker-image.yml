@@ -26,7 +26,7 @@ jobs:
           echo EOF
           >> "$GITHUB_OUTPUT"
 
-      - name: echo vars for loop
+      - name: echo vars for loop　# to delete
         env:
           DIFF_NAME_ONLY: ${{ steps.diff.outputs.diff_name_only }}
         run: |
