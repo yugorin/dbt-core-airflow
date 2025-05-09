@@ -12,7 +12,7 @@ FROM python:3.12.10-slim-bullseye
 WORKDIR /usr/app
 
 COPY --from=builder /usr/bin/git /usr/bin/git
-COPY --from=builder /usr/local/bin/dbt /usr/local/bin/dbt
+COPY --from=builder /usr/local/bin /usr/local/bin
 COPY --from=builder /usr/local/lib/python3.12/site-packages /usr/local/lib/python3.12/site-packages
 
 RUN groupadd -r dbt_users && \
