@@ -2,6 +2,9 @@ services:
   dbt:
     build:
       context: .
+    volumes:
+      - ./requirements.txt:/usr/app/requirements.txt
+      - ./models:/usr/app/models
     secrets:
       - dbt_profiles_yml
       - snowflake_private_key
