@@ -2,8 +2,6 @@ services:
   dbt:
     build:
       context: .
-    environment:
-      - DBT_PROFILES_DIR=/usr/app/.dbt
     volumes:
       - ./requirements.txt:/usr/app/requirements.txt
       - ./dbt_project.yml:/usr/app/dbt_project.yml
