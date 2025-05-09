@@ -24,7 +24,7 @@ jobs:
         run: |
           {
             echo 'sql_file_paths_to_lint<<EOF'
-            git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} | grep '\.sql$
+            git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} | grep '\.sql$'
             echo EOF
           } >> "$GITHUB_OUTPUT"
 
