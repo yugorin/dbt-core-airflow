@@ -21,10 +21,11 @@ jobs:
 
       - id: diff
         run: |
-          echo 'diff_name_only<<EOF'
-          git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}
-          echo EOF
-          >> "$GITHUB_OUTPUT"
+          {
+            echo 'diff_name_only<<EOF'
+            git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}
+            echo EOF
+          } >> "$GITHUB_OUTPUT"
 
       - name: echo vars for loop　# to delete
         env:
