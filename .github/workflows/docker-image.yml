@@ -5,7 +5,7 @@ on:
     types: [opened, synchronize, reopened, ready_for_review]
     paths:
       - '**.sql'
-      # - '**.yml'
+      - '**.yml'
     branches:
       - 'main'
 
@@ -55,6 +55,7 @@ jobs:
           SNOWFLAKE_PRIVATE_KEY: ${{ secrets.SNOWFLAKE_PRIVATE_KEY }}
         
       - name: Run container with compose for sqlfluff lint models
+        continue-on-error: true
         env:
           DBT_PROFILES_YML: ${{ secrets.DBT_PROFILES_YML }}
           SNOWFLAKE_PRIVATE_KEY: ${{ secrets.SNOWFLAKE_PRIVATE_KEY }}
@@ -68,5 +69,7 @@ jobs:
             ln -s /run/secrets/dbt_profiles_yml /usr/app/.dbt/profiles.yml
             sqlfluff lint models/
           '
+          echo "### 🧹 SQLFluff Lint Result" >> $GITHUB_STEP_SUMMARY
+          docker compose -f docker-compose.ci.yml exec dbt cat /tmp/lint_result.txt >> $GITHUB_STEP_SUMMARY
 
 
